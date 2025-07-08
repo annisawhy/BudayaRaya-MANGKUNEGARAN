@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"name": "destinasi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "Museum Batik Danar Hadi", "Jarak": "1000 meter", "Waktu": "14 menit", "Foto": "Museum Batik Danar Hadi" }, "geometry": { "type": "Point", "coordinates": [ 110.816394200000047, -7.568697899999968, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Tumurun Private Museum", "Jarak": "1100 meter", "Waktu": "15 menit", "Foto": "Tumurun Private Museum" }, "geometry": { "type": "Point", "coordinates": [ 110.816376200000036, -7.570225699999986, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Masjid Agung Kraton Surakarta", "Jarak": "1400 meter", "Waktu": "4 menit", "Foto": "Masjid Agung Kraton Surakarta" }, "geometry": { "type": "Point", "coordinates": [ 110.826662200000044, -7.574170399999963, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Pasar Triwindu", "Jarak": "250 meter", "Waktu": "4 menit", "Foto": "Pasar Triwindu" }, "geometry": { "type": "Point", "coordinates": [ 110.822507100000053, -7.569016899999956, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Monumen Pers Nasional", "Jarak": "600 meter", "Waktu": "9 menit", "Foto": "Monumen Pers Nasional" }, "geometry": { "type": "Point", "coordinates": [ 110.818083700000045, -7.564910099999965, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Keraton Surakarta", "Jarak": "2000 meter", "Waktu": "6 menit", "Foto": "Keraton Surakarta" }, "geometry": { "type": "Point", "coordinates": [ 110.827829700000052, -7.577689399999945, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Pasar Klewer", "Jarak": "2300 meter", "Waktu": "6 menit", "Foto": "Pasar Klewer" }, "geometry": { "type": "Point", "coordinates": [ 110.826699700000063, -7.575274499999979, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Museum Radya Pustaka", "Jarak": "1500 meter", "Waktu": "5 menit", "Foto": "Museum Radya Pustaka" }, "geometry": { "type": "Point", "coordinates": [ 110.814460500000052, -7.568281499999956, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Alun Alun Lor Surakarta", "Jarak": "1600 meter", "Waktu": "5 menit", "Foto": "Alun Alun Lor Surakarta" }, "geometry": { "type": "Point", "coordinates": [ 110.828801850084773, -7.574559554491475, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Benteng Vastenburg", "Jarak": "1900 meter", "Waktu": "7 menit", "Foto": "Benteng Vastenburg" }, "geometry": { "type": "Point", "coordinates": [ 110.830123099745776, -7.571700456864361, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Alun Alun Kidul Surakarta", "Jarak": "2600 meter", "Waktu": "8 menit", "Foto": "Alun Alun Kidul Surakarta" }, "geometry": { "type": "Point", "coordinates": [ 110.826757389803817, -7.581371802516442, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Kampung Batik Kauman", "Jarak": "1800 meter", "Waktu": "6 menit", "Foto": "Kampung Batik Kauman" }, "geometry": { "type": "Point", "coordinates": [ 110.826310969576312, -7.573281624491477, 0.0 ] } }
+]
+}
