@@ -1,0 +1,317 @@
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Destinasi Sekitar Pura Mangkunegaran </title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<!-- Marker Cluster CSS Library -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<style>
+    html, body, #map{
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+    }
+    .info {
+       padding: 6px 8px;
+       font: 14px/16px Arial, Helvetica, sans-serif;
+       background: white;
+       background: rgba(255,255,255,0.8);
+       box-shadow: 0 0 15px rgba(0,0,0,0.2);
+       border-radius: 5px;
+    }
+    .info h2 {
+       margin: 0 0 5px;
+       color: #777;
+    }
+</style>
+</head>
+<body>
+    <body style="background-color:mintcream;">
+        <b> Destinasi Sekitar Pura Mangkunegaran </b>
+       
+          <!-- Library Leaflet Javascript -->
+       <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+               
+       <!-- Library jquery -->
+       <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
+   
+       <!-- Library Bootstrap -->
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   
+       <!-- Marker Cluster JS Library -->
+       <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+   
+       <!-- Bootstrap Modal Popup -->
+       <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+           <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <button class="close" type="button" data-dismiss="modal" aria-hidden="true">×</button>
+                   <h4 class="modal-title text-primary" id="feature-title"></h4>
+               </div>
+               <div class="modal-body" id="feature-info"></div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+               </div>
+           </div>
+           </div>
+       </div>
+       <div id="map"></div> 
+
+       <script>
+        //Center map
+    var map = L.map('map').setView([-7.5663224,110.8224297],19);
+
+//Basemap
+           var basemap1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        
+        var basemap2 = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3'],
+        attribution: 'Google Streets'
+        }); 
+        
+        var basemap3 = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3'],
+        attribution: 'Google Satellite',
+        }); 
+        basemap3.addTo(map);
+
+//Layer Point
+		  var markerClusters = new L.MarkerClusterGroup({
+			spiderfyOnMaxZoom: true,
+			showCoverageOnHover: true,
+			zoomToBoundsOnClick: true,
+			disableClusteringAtZoom: 15 //Disable cluster pada zoom 15
+			});
+
+    	var destinasi = L.geoJson(null, {
+			   pointToLayer: function (feature, latlng) {
+				  return L.marker(latlng, {
+					 icon: L.icon({
+						iconUrl: "datadestinasi/logolokasi.png",
+						iconSize: [40, 40],
+						iconAnchor: [11, 22],
+						popupAnchor: [0, -25]
+					 })
+				  });
+			   },
+
+			   onEachFeature: function (feature, layer) {
+				   if (feature.properties) {
+				   var cleanName = feature.properties.Name.replace(/[\/]/g, '').replace(/\s+/g, '_');
+           var imgPath = "datadestinasi/" + cleanName + ".png";
+					var content = "<table class='table table-striped table-bordered table-condensed'>" +
+                    "<tr><th>Nama Destinasi</th><td>" + feature.properties.Name + "</td></tr>" +
+					  "<tr><th>Jarak Tempuh Terdekat</th><td>" + feature.properties.Jarak + "</td></tr>"+
+					  "<tr><th>Waktu Tempuh Tercepat</th><td>" + feature.properties.Waktu + "</td></tr>"+
+                      "<tr><td colspan='2'><img src='" + imgPath + "' alt='Foto " + feature.properties.Foto + "' style='width:100%; height:auto; margin-top:10px;'></td></tr>" +
+					  "</table>"; 
+		 
+					  layer.on({
+						 click: function (e) {
+						  $("#feature-title").html('Destinasi Lain');
+						  $("#feature-info").html(content);
+						  $("#featureModal").modal("show");
+						 }
+					  });
+				   }
+				} 
+			});
+			$.getJSON("datadestinasi/destinasi.geojson", function (datadestinasi) {
+       		destinasi.addData(datadestinasi);
+			markerClusters.addLayer(destinasi).addTo(map); //Menambahkan markerClusters ke dalam layertitik
+			});
+
+         
+   
+//LAYER POLYGON
+		var bataspuraColors = {"Kawasan Pura Mangkunegaran":"#ECEF76"} 
+        var bataspura = L.geoJson(null, {
+			   style: function (feature) {
+				  return {
+					 fillColor: bataspura [feature.properties.Keterangan],
+					 fillOpacity: 0.75,
+					 color: "yellow",
+					 weight: 2,
+					 opacity: 1
+				  };
+			   },   
+
+			 onEachFeature: function (feature, layer) {
+               var content = "<table class='table table-striped table-bordered table-condensed'>" +
+                "<tr><th>Kabupaten/Kota</th><td>" + 'Kota Surakarta' + "</td></tr>" +
+                "<tr><th>Batas</th><td>" + feature.properties.Keterangan + "</td></tr>" +
+                "<tr><th>Luas</th><td>" + " 9,8 Ha" + "</td></tr>" +
+                "</table";
+                
+                layer.on({
+				  mouseover: function (e) {  
+					 var layer = e.target;
+					 layer.setStyle({
+						weight: 2,
+						color: "#00FFFF",
+						opacity: 1,
+						fillColor: "yellow",
+						fillOpacity: 1
+					 });
+				  },
+					mouseout: function (e) { 
+					bataspura.resetStyle(e.target);
+					map.closePopup();
+				  },
+                  click: function (e) {
+					  $("#feature-title").html("Keterangan");
+					  $("#feature-info").html(content);
+					  $("#featureModal").modal("show");
+				}
+			  });
+		 	 } 
+			});
+			$.getJSON("datadestinasi/bataspura.geojson", function (datadestinasi) {
+			   bataspura.addData(datadestinasi);
+			   map.addLayer(bataspura);
+			   map.fitBounds(bataspura.getBounds());
+			});
+
+
+//LAYER POLYLINE
+var aksesjalanweight= {"Jalan Arteri/Utama": 6, "Jalan Kolektor": 5, "Jalan Lokal": 2,};
+var aksesjalancolors= {"Jalan Arteri/Utama": "#F11024", "Jalan Kolektor": "#F19710", "Jalan Lokal": "#BA76EF",}
+var aksesjalan = L.geoJson(null, {
+      style: function (feature) {	//Fungsi Style
+        return {
+          color: aksesjalancolors [feature.properties.KETERANGAN],
+          weight: aksesjalanweight [feature.properties.KETERANGAN],		
+          opacity: 1,												
+          clickable: true											
+        };
+      },
+      onEachFeature: function (feature, layer) {
+        layer.on({
+          mouseover: function (e) {
+            var layer = e.target;
+            layer.setStyle({		//Highlight
+              weight: 3,			
+              color: "YELLOW",		//Warna highlight
+              opacity: 1
+            });
+            if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+          },
+          mouseout: function (e) {
+            jalan.resetStyle(e.target);		//Mengembalikan ke style jalan semula ketika kursor mouse keluar dari feature
+          }
+        });
+        if (feature.properties) {
+            var content = "<table class='table table-striped table-bordered table-condensed'>"
+            layer.on({
+            click: function (e) {
+              $("#feature-title").html("Keterangan");
+              $("#feature-info").html(content);
+              $("#featureModal").modal("show");
+
+            }
+          });
+        }
+      }
+    });
+
+    $.getJSON("datadestinasi/aksesjalan.geojson", function (datadestinasi) {		
+      aksesjalan.addData(datadestinasi);
+	  map.addLayer(aksesjalan);
+	  map.fitBounds(aksesjalan.getBounds());
+    });
+
+
+
+
+        //MASUKAN JUDUL PETA--
+var title = new L.Control({position:'topright'});
+    title.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info');
+         this.update();
+         return this._div;
+        };
+    title.update = function () {
+     this._div.innerHTML = '<h2>Destinasi </h2> '
+        };
+    title.addTo(map);
+         //Control Layer
+            var baseMaps = {
+                'Open Street Map' : basemap1,
+                'Google Streets' : basemap2,
+                'Google Satellite' : basemap3,
+            }
+            var layers={ 
+                'Destinasi Lain' : destinasi,
+                'Akses Jalan' : aksesjalan,
+                'Kawasan Pura Mangkunegaran': bataspura,
+            
+                
+                
+
+            };
+    
+            var layerControl = L.control.layers(baseMaps,layers);
+            layerControl.addTo(map);
+
+
+
+        //LOGOWATERMARK
+        
+        L.Control.Watermark = L.Control.extend({
+           onAdd: function(map) {
+              var img = L.DomUtil.create('img');
+              img.src = 'https://repository.unissula.ac.id/10/1/logo.png';
+              img.style.width = '75px';
+              return img;
+           },
+           onRemove: function(map) {
+              // Nothing to do here
+           }
+        });
+        L.control.watermark = function(opts) {
+           return new L.Control.Watermark(opts);
+        }
+        L.control.watermark({ position: 'bottomleft' }).addTo(map);
+       </script>
+<script>
+    //Center map
+    var map = L.map('map').setView([-7.5663224,110.8224297],19);
+
+    //Basemap
+   			var basemap1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			});
+			
+			var basemap2 = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+			maxZoom: 20,
+			subdomains:['mt0','mt1','mt2','mt3'],
+			attribution: 'Google Streets'
+			}); 
+			
+			var basemap3 = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+			maxZoom: 20,
+			subdomains:['mt0','mt1','mt2','mt3'],
+			attribution: 'Google Satellite',
+			}); 
+			basemap3.addTo(map);
+
+</script>
+</body>
+</html>
